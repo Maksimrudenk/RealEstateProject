@@ -15,6 +15,21 @@ const baseLocation = { lat: 34.7768, lng: 32.42 };
 
 let map, autoAdress;
 
+async function httpGET(uri = '', requestHeaders = [[]]){
+  let fetchInit = {
+      method: 'GET',
+      cache: 'no-cache',
+      credentials: 'omit',
+      referrerPolicy: 'no-referrer',
+  };
+  if(requestHeaders !== null){
+      fetchInit.headers = requestHeaders;
+  }
+  const response = await fetch(baseUrl + uri, fetchInit);
+  const json = await response.json();
+  return json;
+}
+
 async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
 
