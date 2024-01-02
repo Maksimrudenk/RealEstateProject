@@ -11,7 +11,6 @@
 	<groupId>com.main</groupId>
 	<artifactId>RealEstate</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 	<name>RealEstate</name>
 	<description>RealEstate</description>
 	<properties>
