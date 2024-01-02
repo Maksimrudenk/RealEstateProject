@@ -13,7 +13,7 @@ class home {
 const baseUrl = 'http:localhost:8080';
 const baseLocation = { lat: 34.7768, lng: 32.42 };
 
-let map, autoAdress;
+let map, autoAddress;
 
 async function httpGET(uri = '', requestHeaders = [[]]){
   let fetchInit = {
@@ -35,7 +35,7 @@ async function initMap() {
 
   const { Autocomplete } = await google.maps.importLibrary("places")
 
-  autoAdress = new Autocomplete(document.getElementById("AutoPlace"));
+  autoAddress = new Autocomplete(document.getElementById("AutoPlace"));
 
   map = new Map(document.getElementById("map"), {
     center: baseLocation,
@@ -54,7 +54,7 @@ async function initMap() {
 
   map.addListener("click", e => clickListener(e));
 
-  autoAdress.addListener("place_changed", function () {
+  autoAddress.addListener("place_changed", function () {
     console.log(autoAdress.getPlace().geometry.location);
     // marker.setPosition(autoAdress.getPlace().geometry.location);
     map.setCenter(autoAdress.getPlace().geometry.location)
