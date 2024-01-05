@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/style.css}">
-    <script th:src="@{/script.js}" defer></script>
+    <link rel="stylesheet" href="../static/style.css">
+    <!-- <link rel="stylesheet" th:href="@{/style.css}"> -->
+    <script src="../static/script.js" defer></script>
+    <!-- <script th:src="@{/script.js}" defer></script> -->
     <title>Document</title>
 </head>
 
@@ -15,6 +17,37 @@
 
     <div id="menu">
         <input type="text" name="" id="AutoPlace">
+        <div style="height: 90%;">
+            <div id="helloTipBlock" class="flexSpaceBetween block">
+                <p>click on a marker to see details about property</p>
+                <div id="addBlock" class="flexSpaceBetween">
+                    <p>or login to add an offer</p>
+                    <p>User</p>
+                    <button>log in</button>
+                    <button>add offer</button>
+                </div>
+            </div>
+            <div id="infoOutBlok" class="flexSpaceBetween block none">
+                <div class="left flexSpaceBetween column">
+                    <p class="leftOut" id="outAddress"></p>
+                    <p class="leftOut" id="outRent"></p>
+                    <p class="leftOut" id="outContactDetails"></p>
+                </div>
+                <div class="right">
+                    <p id="outDescription"></p>
+                </div>
+            </div>
+            <div id="infoInBlok" class="flexSpaceBetween block none">
+                <div class="left flexSpaceBetween column">
+                    <input type="text" name="" id="inAddress" class="leftIn" placeholder="Address">
+                    <input type="text" name="" id="inRent" class="leftIn" placeholder="Rent">
+                    <input type="text" name="" id="inContactDetails" class="leftIn" placeholder="Contact details">
+                </div>
+                <div class="right">
+                    <input type="text" name="" id="inDescription" placeholder="Short description">
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>(g => { var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; b = b[c] || (b[c] = {}); var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, u = () => h || (h = new Promise(async (f, n) => { await (a = m.createElement("script")); e.set("libraries", [...r] + ""); for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); e.set("callback", c + ".maps." + q); a.src = `https://maps.${c}apis.com/maps/api/js?` + e; d[q] = f; a.onerror = () => h = n(Error(p + " could not load.")); a.nonce = m.querySelector("script[nonce]")?.nonce || ""; m.head.append(a) })); d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)) })
