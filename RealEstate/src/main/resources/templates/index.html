@@ -18,17 +18,20 @@
     <div id="menu">
         <input type="text" name="" id="AutoPlace">
         <div style="height: 90%;">
-            <div id="helloTipBlock" class="flexSpaceBetween block">
-                <p>click on a marker to see details about property</p>
-                <div id="addBlock" class="flexSpaceBetween">
-                    <p>or login to add an offer</p>
-                    <p>User</p>
-                    <button>log in</button>
-                    <button>add offer</button>
+            <div id="helloTipBlock" class="flexSB block">
+                <div class="left">
+                    <p>click on a marker to see details about property</p>
+                </div>
+                <div id="addBlock" class="flexSB right">
+                    <p id="addBlockTipText">or login to add an offer</p>
+                    <p id="addBlockUser" class="none"></p>
+                    <button id="addBlockLoginBut">log in</button>
+                    <button id="addBlockOfferBut" class="none">add offer</button>
                 </div>
             </div>
-            <div id="infoOutBlok" class="flexSpaceBetween block none">
-                <div class="left flexSpaceBetween column">
+            <div id="infoOutBlok" class="flexSB block none">
+                <div class="left flexSB column  alignItemsC">
+                    <button class="goBack">&lAarr;</button>
                     <p class="leftOut" id="outAddress"></p>
                     <p class="leftOut" id="outRent"></p>
                     <p class="leftOut" id="outContactDetails"></p>
@@ -37,14 +40,26 @@
                     <p id="outDescription"></p>
                 </div>
             </div>
-            <div id="infoInBlok" class="flexSpaceBetween block none">
-                <div class="left flexSpaceBetween column">
+            <div id="infoInBlok" class="flexSB block none">
+                <div class="left flexSB column">
+                    <button class="goBack">&lAarr;</button>
                     <input type="text" name="" id="inAddress" class="leftIn" placeholder="Address">
                     <input type="text" name="" id="inRent" class="leftIn" placeholder="Rent">
                     <input type="text" name="" id="inContactDetails" class="leftIn" placeholder="Contact details">
+                    <button class="accept">&#x2714;</button>
                 </div>
                 <div class="right">
                     <input type="text" name="" id="inDescription" placeholder="Short description">
+                </div>
+            </div>
+            <div id="loginBlock" class="flexSB block none">
+                <div class="left flexSB column">
+                    <button class="goBack">&lAarr;</button>
+                    <input type="text" name="" id="inUsername" class="leftIn" placeholder="Username">
+                    <input type="text" name="" id="inPassword" class="leftIn" placeholder="Password">
+                    <button class="accept" id="loginAcceptBut">&#x2714;</button>
+                </div>
+                <div class="right">
                 </div>
             </div>
         </div>
