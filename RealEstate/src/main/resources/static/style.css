@@ -20,6 +20,7 @@
 
   .block {
       height: 100%;
+      /* box-sizing: border-box; */
   }
 
   .none {
@@ -28,6 +29,11 @@
 
   .goBack {
       width: 100%;
+  }
+
+  #addBlock button {
+      width: 50%;
+      height: 5vh;
   }
 
   .left,
@@ -54,5 +60,17 @@
   }
 
   #outDescription {
-      margin: 5% 5%;
+      height: 95%;
+      width: 100%;
+      box-sizing: border-box;
+      border: none;
+      resize: none;
+  }
+
+  #inDescription {
+      height: 95%;
+      width: 100%;
+      box-sizing: border-box;
+      border: none;
+      resize: none;
   }

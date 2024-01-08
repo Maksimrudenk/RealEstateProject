@@ -37,19 +37,25 @@
                     <p class="leftOut" id="outContactDetails"></p>
                 </div>
                 <div class="right">
-                    <p id="outDescription"></p>
+                    <textarea readonly id="outDescription"></textarea>
                 </div>
             </div>
             <div id="infoInBlok" class="flexSB block none">
                 <div class="left flexSB column">
                     <button class="goBack">&lAarr;</button>
-                    <input type="text" name="" id="inAddress" class="leftIn" placeholder="Address">
+                    <div class="addressDiv flexSB column">
+                        <label for="inAddress">address</label>
+                        <input readonly type="text" name="" id="inAddress" class="leftIn"
+                            placeholder="find an address by above search field">
+
+                    </div>
+
                     <input type="text" name="" id="inRent" class="leftIn" placeholder="Rent">
                     <input type="text" name="" id="inContactDetails" class="leftIn" placeholder="Contact details">
-                    <button class="accept">&#x2714;</button>
+                    <button class="accept" id="infoInAcceptBut">&#x2714;</button>
                 </div>
                 <div class="right">
-                    <input type="text" name="" id="inDescription" placeholder="Short description">
+                    <textarea id="inDescription" placeholder="Short description"></textarea>
                 </div>
             </div>
             <div id="loginBlock" class="flexSB block none">
