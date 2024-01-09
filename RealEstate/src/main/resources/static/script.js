@@ -84,6 +84,7 @@ const inDescription = document.getElementById("inDescription");
 
 const goBackBut = Array.from(document.getElementsByClassName("goBack"));
 
+const autoPlace = document.getElementById("AutoPlace");
 
 const baseUrl = 'http:localhost:8080';
 const baseLocation = { lat: 34.7768, lng: 32.42 };
@@ -221,7 +222,8 @@ async function initMap() {
     if (isCreatingOffer) {
       // currentOffer.lat = autoAddress.getPlace().geometry.location.lat();
       // currentOffer.lng = autoAddress.getPlace().geometry.location.lng();
-      inAddress.value = /*autoAddress.getPlace().name + ", " +*/ autoAddress.getPlace().formatted_address;
+      // inAddress.value = /*autoAddress.getPlace().name + ", " +*/ autoAddress.getPlace().formatted_address;
+      inAddress.value = autoPlace.value;
       inAddress.readOnly = false;
       // console.log(autoAddress.getPlace());
       currentMarker = new google.maps.Marker({
@@ -288,6 +290,10 @@ infoInAcceptBut.addEventListener("click", function () {
 goBackBut.forEach(element => {
   element.addEventListener("click", function () {
     showHelloTipBlock();
+    if (currentMarker != null && currentMarker != undefined) {
+      currentMarker.setMap(null);
+    }
+    autoPlace.value = "";
   })
 });
 
