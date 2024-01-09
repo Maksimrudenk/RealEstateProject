@@ -121,6 +121,11 @@ function showInfoInBlok() {
   loginBlock.classList.add("none");
   isCreatingOffer = true;
   currentOffer = new Offer();
+  inAddress.value = "";
+  inRent.value = "";
+  inContactDetails.value = "";
+  inDescription.value = "";
+  inAddress.readOnly = true;
 }
 
 function showLoginBlok() {
@@ -141,6 +146,22 @@ async function httpGET(uri = '', requestHeaders = [[]]) {
   if (requestHeaders !== null) {
     fetchInit.headers = requestHeaders;
   }
+  const response = await fetch(baseUrl + uri, fetchInit);
+  const json = await response.json();
+  return json;
+}
+
+async function httpPOST(uri = '', data = {}) {
+  let fetchInit = {
+    method: 'POST',
+    cache: 'no-cache',
+    credentials: 'omit',
+    referrerPolicy: 'no-referrer',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
   const response = await fetch(baseUrl + uri, fetchInit);
   const json = await response.json();
   return json;
@@ -249,6 +270,7 @@ infoInAcceptBut.addEventListener("click", function () {
         // httpPOST();
         showHelloTipBlock();
         currentOffer = undefined;
+        currentMarker.setMap(null);
       } else {
         alert("please, fill all field correctly");
       }
