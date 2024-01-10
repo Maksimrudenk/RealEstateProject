@@ -5,6 +5,11 @@
       padding: 0;
   }
 
+  .flexC {
+      display: flex;
+      justify-content: center;
+  }
+
   .flexSB {
       display: flex;
       justify-content: space-between;

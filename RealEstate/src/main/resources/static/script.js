@@ -25,6 +25,11 @@ class RealEstate {
       outRent.textContent = "rent: " + this.re.rent;
       outContactDetails.textContent = "contact details: " + this.re.contactDetails;
       outDescription.textContent = this.re.description;
+      if (currentUser != undefined && currentUser.id == this.re.ownerID) {
+        editRE.classList.remove("none");
+        editing = this;
+      }
+
     });
   }
 }
@@ -67,6 +72,11 @@ const outRent = document.getElementById("outRent");
 const outContactDetails = document.getElementById("outContactDetails");
 const outDescription = document.getElementById("outDescription");
 
+const editRE = document.getElementById("editRE");
+const InfoInEditBlock = document.getElementById("InfoInEditBlock");
+const infoInEditAcceptBut = document.getElementById("infoInEditAcceptBut");
+const infoInDeleteBut = document.getElementById("infoInDeleteBut");
+
 const addBlockTipText = document.getElementById("addBlockTipText");
 const addBlockUser = document.getElementById("addBlockUser");
 const addBlockLoginBut = document.getElementById("addBlockLoginBut");
@@ -89,14 +99,17 @@ const autoPlace = document.getElementById("AutoPlace");
 const baseUrl = 'http:localhost:8080';
 const baseLocation = { lat: 34.7768, lng: 32.42 };
 
-let map, autoAddress, currentUser, currentOffer, currentMarker;
+
+let map, autoAddress, currentUser, currentOffer, currentMarker, editing;
 let isCreatingOffer = false;
+let isEditing = false;
 
 function showHelloTipBlock() {
   helloTipBlock.classList.remove("none");
   infoOutBlok.classList.add("none");
   infoInBlok.classList.add("none");
   loginBlock.classList.add("none");
+  InfoInEditBlock.classList.add("none");
   if (currentUser != undefined) {
     addBlockTipText.classList.add("none");
     addBlockLoginBut.classList.add("none");
@@ -104,7 +117,11 @@ function showHelloTipBlock() {
     addBlockOfferBut.classList.remove("none");
     addBlockUser.textContent = currentUser.userName;
   };
+  if (currentMarker != null && currentMarker != undefined) {
+    currentMarker.setMap(null);
+  }
   isCreatingOffer = false;
+  isEditing = false;
 }
 
 function showInfoOutBlok() {
@@ -112,7 +129,11 @@ function showInfoOutBlok() {
   infoOutBlok.classList.remove("none");
   infoInBlok.classList.add("none");
   loginBlock.classList.add("none");
+  editRE.classList.add("none");
+  InfoInEditBlock.classList.add("none");
   isCreatingOffer = false;
+  isEditing = false;
+
 }
 
 function showInfoInBlok() {
@@ -120,7 +141,10 @@ function showInfoInBlok() {
   infoOutBlok.classList.add("none");
   infoInBlok.classList.remove("none");
   loginBlock.classList.add("none");
+  InfoInEditBlock.classList.add("none");
+  infoInAcceptBut.classList.remove("none");
   isCreatingOffer = true;
+  isEditing = false;
   currentOffer = new Offer();
   inAddress.value = "";
   inRent.value = "";
@@ -133,8 +157,10 @@ function showLoginBlok() {
   helloTipBlock.classList.add("none");
   infoOutBlok.classList.add("none");
   infoInBlok.classList.add("none");
+  InfoInEditBlock.classList.add("none");
   loginBlock.classList.remove("none");
   isCreatingOffer = false;
+  isEditing = false;
 }
 
 async function httpGET(uri = '', requestHeaders = [[]]) {
@@ -197,6 +223,48 @@ async function setAllMarkers() {
   }
 }
 
+function accept() {
+  if (currentMarker != undefined || isEditing) {
+    if (isCreatingOffer) {
+      currentOffer.lat = currentMarker.position.lat();
+      currentOffer.lng = currentMarker.position.lng();
+    };
+    currentOffer.address = inAddress.value;
+    currentOffer.rent = inRent.value;
+    currentOffer.contactDetails = inContactDetails.value;
+    currentOffer.description = inDescription.value;
+    currentOffer.ownerID = currentUser.id;
+    if (isEditing || currentOffer.address != currentMarker.position) {
+      if (currentOffer.isReady()) {
+
+
+        if (isEditing) {
+          currentOffer.id = editing.re.Id;
+          // httpPOST();
+          console.log(currentOffer);
+          editing = undefined;
+        } else {
+          // httpPOST();
+          currentMarker.setMap(null);
+          currentMarker = undefined;
+          console.log(currentOffer);
+        }
+        showHelloTipBlock();
+        currentOffer = undefined;
+
+      } else {
+        alert("please, fill all field correctly");
+      }
+
+    } else {
+      alert("please, fill the address field correctly");
+    }
+  }
+  else {
+    alert("please marker the place on a map");
+  }
+}
+
 async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
 
@@ -231,6 +299,8 @@ async function initMap() {
         position: autoAddress.getPlace().geometry.location,
         draggable: true,
       });
+
+
       currentMarker.addListener("position_changed", function () {
         inAddress.value = currentMarker.position;
         // console.log(currentMarker);
@@ -252,47 +322,41 @@ addBlockOfferBut.addEventListener("click", function () {
 });
 
 loginAcceptBut.addEventListener("click", function () {
-  // const response = httpGET("login", [["username", inUsername.value],["password", inPassword.value]]);
+  // const response = httpGET("/login", [["username", inUsername.value],["password", inPassword.value]]);
   const response = { userName: "testUser1", id: 1 };
   currentUser = new User(response);
   showHelloTipBlock();
 });
 
-infoInAcceptBut.addEventListener("click", function () {
-  if (currentMarker != undefined) {
-    currentOffer.lat = currentMarker.position.lat();
-    currentOffer.lng = currentMarker.position.lng();
-    currentOffer.address = inAddress.value;
-    currentOffer.rent = inRent.value;
-    currentOffer.contactDetails = inContactDetails.value;
-    currentOffer.description = inDescription.value;
-    currentOffer.ownerID = currentUser.id;
-    if (currentOffer.address != currentMarker.position) {
-      if (currentOffer.isReady()) {
-        // httpPOST();
-        showHelloTipBlock();
-        currentOffer = undefined;
-        currentMarker.setMap(null);
-      } else {
-        alert("please, fill all field correctly");
-      }
+infoInAcceptBut.addEventListener("click", accept);
 
-    } else {
-      alert("please, fill the address field correctly");
-    }
-  }
-  else {
-    alert("please marker the place on a map");
-  }
+editRE.addEventListener("click", function () {
+  showInfoInBlok();
+  InfoInEditBlock.classList.remove("none");
+  infoInAcceptBut.classList.add("none");
+  inAddress.value = editing.re.address;
+  inRent.value = editing.re.rent;
+  inContactDetails.value = editing.re.contactDetails;
+  inDescription.value = editing.re.description;
+  currentOffer.lat = editing.position.lat();
+  currentOffer.lng = editing.position.lng();
+  isCreatingOffer = false;
+  isEditing = true;
+})
 
-});
+infoInEditAcceptBut.addEventListener("click", accept)
+
+infoInDeleteBut.addEventListener("click", function () {
+  //httpPOST;
+  showHelloTipBlock();
+  editing.setMap(null);
+  currentOffer = undefined;
+  editing = undefined;
+})
 
 goBackBut.forEach(element => {
   element.addEventListener("click", function () {
     showHelloTipBlock();
-    if (currentMarker != null && currentMarker != undefined) {
-      currentMarker.setMap(null);
-    }
     autoPlace.value = "";
   })
 });
