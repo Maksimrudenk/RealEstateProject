@@ -1,6 +1,6 @@
 package com.main.realestate.service;
 
-import com.main.realestate.entity.User;
+import com.main.realestate.entity.User.User;
 
 public interface StorageUserService {
 

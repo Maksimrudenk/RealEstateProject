@@ -1,6 +1,6 @@
 package com.main.realestate.service;
 
-import com.main.realestate.entity.User;
+import com.main.realestate.entity.User.User;
 
 public class TestUserService implements StorageUserService{
 
@@ -8,11 +8,13 @@ public class TestUserService implements StorageUserService{
 
     @Override
     public void save(User user) {
+
         System.out.println(user + " successfully saved");
     }
 
     @Override
     public User[] getAll() {
+
         return allTestUsers;
     }
 
