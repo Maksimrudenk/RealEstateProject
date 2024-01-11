@@ -1,6 +1,6 @@
 package com.main.realestate.service;
 
-import com.main.realestate.entity.RealEstate;
+import com.main.realestate.entity.RealEstate.RealEstate;
 
 
 
