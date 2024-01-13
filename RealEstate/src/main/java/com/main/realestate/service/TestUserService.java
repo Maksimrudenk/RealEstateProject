@@ -21,7 +21,7 @@ public class TestUserService implements StorageUserService{
     @Override
     public User getByName(String name) {
         for (User u:allTestUsers){
-            if(u.getName() == name) return u;
+            if(u.getName().equals(name)) return u;
         }
         System.out.println("User is not found");
         return null;

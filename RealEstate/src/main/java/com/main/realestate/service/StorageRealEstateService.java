@@ -10,4 +10,5 @@ public interface StorageRealEstateService {
 
     public RealEstate getById(long id);
 
+    public void delete(long id);
 }

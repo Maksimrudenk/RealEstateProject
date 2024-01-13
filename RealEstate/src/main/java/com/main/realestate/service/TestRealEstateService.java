@@ -30,4 +30,9 @@ public class TestRealEstateService implements StorageRealEstateService{
         System.out.println("User is not found");
         return null;
     }
+
+    @Override
+    public void delete(long id) {
+        System.out.println("deleted");
+    }
 }

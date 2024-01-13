@@ -1,58 +1,30 @@
 package com.main.realestate.entity.User;
 
-import com.main.realestate.repository.UserRepository;
+import com.main.realestate.DTO.UserLoginDTO;
+import com.main.realestate.service.StorageUserService;
 import com.main.realestate.service.TestUserService;
-import jakarta.persistence.Id;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.attribute.UserPrincipalNotFoundException;
-import java.util.List;
+import java.util.Map;
+
 
 @RestController
-@RequestMapping(path = "/api/test")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    StorageUserService userService = new TestUserService();
 
-    @GetMapping
-public Iterable findAll() {
-    return userRepository.findAll();
-    }
+    @GetMapping("/login")
+    public UserLoginDTO userLogin(@RequestHeader Map<String, String> headers){
+        User user = userService.getByName(headers.get("username"));
+        System.out.println(headers.get("username"));
 
-    @GetMapping("/profile/{login}")
-    public List findByLogin(@PathVariable String userLogin) {
-             return userRepository.findByLogin(userLogin);
-    }
-
-    @GetMapping("/{id}")
-    public User findOne (@PathVariable Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(UserPrincipalNotFoundException: :new)
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public User create(@RequestBody User user) {
-        return userRepository.save(user);
-    }
-
-    DeleteMapping("/{id}")
-        public void delete(@PathVariable Long id) {
-        userRepository.findById(id)
-                .orElseThrow(UserNotFoundException: :new);
-        userRepository.deleteById(id);
+        if (user.getPassword().equals(headers.get("password"))){
+            return new UserLoginDTO(user.getName(), user.getId(),"OK");
         }
 
-        @PutMapping("/{id}")
-    public User updateUser(@RequestBody User user, @PathVariable Long id) {
-        if (user.getId() != id) {
-            throw new UserIdMismatchException();
-        }
-        userRepository.findById(id)
-                .orElseThrow(UserPrincipalNotFoundException: :new)
-            return userRepository.save(user);
-        }
+        else return new UserLoginDTO("ERROR");
+    }
+
 }
