@@ -1,3 +1,4 @@
+// entity representing rent offers
 class RealEstate {
   constructor(dto) {
     this.Id = dto.id;
@@ -34,6 +35,7 @@ class RealEstate {
   }
 }
 
+// object that can be sent by http post requrst
 class Offer {
   address;
   lat;
@@ -61,8 +63,7 @@ class User {
   }
 };
 
-
-
+// functions that facilitate change of menu parts {
 
 function showHelloTipBlock() {
   helloTipBlock.classList.remove("none");
@@ -122,7 +123,10 @@ function showLoginBlok() {
   isCreatingOffer = false;
   isEditing = false;
 }
+// }
 
+// function for sanding Get http requests
+// the final path consist of vars.js{base url} + uri
 async function httpGET(uri = '', requestHeaders = [[]]) {
   let fetchInit = {
     method: 'GET',
@@ -145,6 +149,8 @@ async function httpGET(uri = '', requestHeaders = [[]]) {
   else return null;
 }
 
+// function for sanding Post http requests
+// the final path consist of vars.js{base url} + uri
 async function httpPOST(uri = '', data = {}) {
   let fetchInit = {
     method: 'POST',
@@ -161,6 +167,7 @@ async function httpPOST(uri = '', data = {}) {
   return json;
 }
 
+// function puts all existing rent offers on a map
 async function setAllMarkers() {
   let response = await httpGET("/requestAll", null);
   for (const dto of response.list) {
@@ -168,6 +175,7 @@ async function setAllMarkers() {
   }
 }
 
+// function sends create and change requests
 function accept() {
   if (currentMarker != undefined || isEditing) {
     if (isCreatingOffer) {
@@ -210,6 +218,7 @@ function accept() {
   }
 }
 
+// function that initializes google maps content
 async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
 
@@ -258,6 +267,7 @@ async function initMap() {
   setAllMarkers();
 }
 
+// function sends request to log in user
 async function login() {
 
   const response = await httpGET("/login", [["username", inUsername.value], ["password", inPassword.value]]);
@@ -270,6 +280,7 @@ async function login() {
   else alert("name/password is incorrect");
 }
 
+// function sends request to deleate a rent offer
 async function deleteRE() {
   httpPOST("/delete", currentOffer);
   showHelloTipBlock();
@@ -278,6 +289,7 @@ async function deleteRE() {
   editing = undefined;
 }
 
+// sets event listeners {
 addBlockLoginBut.addEventListener("click", function () {
   showLoginBlok();
 });
@@ -314,5 +326,7 @@ goBackBut.forEach(element => {
     autoPlace.value = "";
   })
 });
+
+// }
 
 initMap();

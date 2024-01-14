@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class RealEstateController {
 
+    //  edit used constructor to change the way of storaging files
     StorageRealEstateService realEstateService = new TestRealEstateService();
 
     @GetMapping("/requestAll")
