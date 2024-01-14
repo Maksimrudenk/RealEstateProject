@@ -1,4 +1,4 @@
-package com.main.realestate.entity.User;
+package com.main.realestate.entity.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

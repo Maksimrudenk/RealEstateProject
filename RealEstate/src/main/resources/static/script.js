@@ -7,7 +7,7 @@ class RealEstate {
     this.description = dto.description;
     this.rent = dto.rent;
     this.contactDetails = dto.contactDetails;
-    this.ownerID = dto.ownerID;
+    this.ownerID = dto.ownerId;
   }
 
   setMarker() {
@@ -62,47 +62,7 @@ class User {
 };
 
 
-const helloTipBlock = document.getElementById("helloTipBlock");
-const infoOutBlok = document.getElementById("infoOutBlok");
-const infoInBlok = document.getElementById("infoInBlok");
-const loginBlock = document.getElementById("loginBlock");
 
-const outAddress = document.getElementById("outAddress");
-const outRent = document.getElementById("outRent");
-const outContactDetails = document.getElementById("outContactDetails");
-const outDescription = document.getElementById("outDescription");
-
-const editRE = document.getElementById("editRE");
-const InfoInEditBlock = document.getElementById("InfoInEditBlock");
-const infoInEditAcceptBut = document.getElementById("infoInEditAcceptBut");
-const infoInDeleteBut = document.getElementById("infoInDeleteBut");
-
-const addBlockTipText = document.getElementById("addBlockTipText");
-const addBlockUser = document.getElementById("addBlockUser");
-const addBlockLoginBut = document.getElementById("addBlockLoginBut");
-const addBlockOfferBut = document.getElementById("addBlockOfferBut");
-
-const loginAcceptBut = document.getElementById("loginAcceptBut");
-const inUsername = document.getElementById("inUsername");
-const inPassword = document.getElementById("inPassword");
-
-const infoInAcceptBut = document.getElementById("infoInAcceptBut");
-const inAddress = document.getElementById("inAddress");
-const inRent = document.getElementById("inRent");
-const inContactDetails = document.getElementById("inContactDetails");
-const inDescription = document.getElementById("inDescription");
-
-const goBackBut = Array.from(document.getElementsByClassName("goBack"));
-
-const autoPlace = document.getElementById("AutoPlace");
-
-const baseUrl = 'http:localhost:8080';
-const baseLocation = { lat: 34.7768, lng: 32.42 };
-
-
-let map, autoAddress, currentUser, currentOffer, currentMarker, editing;
-let isCreatingOffer = false;
-let isEditing = false;
 
 function showHelloTipBlock() {
   helloTipBlock.classList.remove("none");
@@ -171,11 +131,18 @@ async function httpGET(uri = '', requestHeaders = [[]]) {
     referrerPolicy: 'no-referrer',
   };
   if (requestHeaders !== null) {
-    fetchInit.headers = requestHeaders;
+    const headers = new Headers();
+    requestHeaders.forEach(header => {
+      headers.append(header[0], header[1]);
+    });
+    fetchInit.headers = headers;
   }
   const response = await fetch(baseUrl + uri, fetchInit);
-  const json = await response.json();
-  return json;
+  if (response.ok) {
+    const json = await response.json();
+    return json;
+  }
+  else return null;
 }
 
 async function httpPOST(uri = '', data = {}) {
@@ -195,29 +162,7 @@ async function httpPOST(uri = '', data = {}) {
 }
 
 async function setAllMarkers() {
-  // let response = await httpGET("/requestAll", null);
-  let response = {
-    list: [{
-      id: 1,
-      address: "testAddres1",
-      lat: 34.7763,
-      lng: 32.422,
-      description: "test description1",
-      rent: 1000,
-      contactDetails: "testEmail1",
-      ownerID: 1,
-    },
-    {
-      id: 2,
-      address: "testAddres2",
-      lat: 34.7759,
-      lng: 32.4185,
-      description: "test description2",
-      rent: 2000,
-      contactDetails: "testEmail2",
-      ownerID: 2,
-    }]
-  }; //test;
+  let response = await httpGET("/requestAll", null);
   for (const dto of response.list) {
     new RealEstate(dto).setMarker();
   }
@@ -240,11 +185,11 @@ function accept() {
 
         if (isEditing) {
           currentOffer.id = editing.re.Id;
-          // httpPOST();
+          httpPOST("/change", currentOffer);
           console.log(currentOffer);
           editing = undefined;
         } else {
-          // httpPOST();
+          httpPOST("/save", currentOffer);
           currentMarker.setMap(null);
           currentMarker = undefined;
           console.log(currentOffer);
@@ -313,6 +258,26 @@ async function initMap() {
   setAllMarkers();
 }
 
+async function login() {
+
+  const response = await httpGET("/login", [["username", inUsername.value], ["password", inPassword.value]]);
+  // console.log(response);
+  // const response = { userName: "testUser1", id: 1 };
+  if (response != null) {
+    currentUser = new User(response);
+    showHelloTipBlock();
+  }
+  else alert("name/password is incorrect");
+}
+
+async function deleteRE() {
+  httpPOST("/delete", currentOffer);
+  showHelloTipBlock();
+  editing.setMap(null);
+  currentOffer = undefined;
+  editing = undefined;
+}
+
 addBlockLoginBut.addEventListener("click", function () {
   showLoginBlok();
 });
@@ -321,12 +286,7 @@ addBlockOfferBut.addEventListener("click", function () {
   showInfoInBlok();
 });
 
-loginAcceptBut.addEventListener("click", function () {
-  // const response = httpGET("/login", [["username", inUsername.value],["password", inPassword.value]]);
-  const response = { userName: "testUser1", id: 1 };
-  currentUser = new User(response);
-  showHelloTipBlock();
-});
+loginAcceptBut.addEventListener("click", login);
 
 infoInAcceptBut.addEventListener("click", accept);
 
@@ -346,13 +306,7 @@ editRE.addEventListener("click", function () {
 
 infoInEditAcceptBut.addEventListener("click", accept)
 
-infoInDeleteBut.addEventListener("click", function () {
-  //httpPOST;
-  showHelloTipBlock();
-  editing.setMap(null);
-  currentOffer = undefined;
-  editing = undefined;
-})
+infoInDeleteBut.addEventListener("click", deleteRE)
 
 goBackBut.forEach(element => {
   element.addEventListener("click", function () {

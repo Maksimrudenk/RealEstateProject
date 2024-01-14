@@ -1,10 +1,13 @@
 package com.main.realestate.service;
 
-import com.main.realestate.entity.RealEstate.RealEstate;
+import com.main.realestate.DTO.RealEstateSaveDTO;
+import com.main.realestate.entity.realEstate.RealEstate;
 
 public interface StorageRealEstateService {
 
-    public void save(RealEstate re);
+    public void create(RealEstateSaveDTO dto);
+
+    public void change(RealEstate re);
 
     public RealEstate[] getAll();
 
