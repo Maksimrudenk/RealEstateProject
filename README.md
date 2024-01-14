@@ -3,7 +3,7 @@ RealEstateProject consists of two parts:
 1)	Web server application that provides a map of the property for rent. It performs functions of providing browsers with web pages, responding http requests from client. Application includes: controllers that respond http, entities that are used as storage units, DTOs, web client(html page, 1 js file ‘vars’ with variables, 1 js file ‘script’ with functions, style css file) , Java interface for storage services, mvn conf file(pom.xml).
 Technologies used:
 Server(java 20.0.1, spring boot, maven, tomcat), web client(html, js, css, google maps api)
-2)	Storage program 
+2)	desktop java - txt file application
 
 
 
