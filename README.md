@@ -8,6 +8,7 @@ Server(java 20.0.1, spring boot, maven, tomcat), web client(html, js, css, googl
 
 
 [RealEstate] --- Root directory of server 
+
 [server] --- This directory contains two archives with the server application inside. 
 Both allows to launch same application in different ways.
 Jar file can be launched by simple jvm,
